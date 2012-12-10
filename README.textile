@@ -9,7 +9,8 @@ The plugin includes a `mmseg` analyzer and a `mmseg` tokenizer.
 
 Version
 -—————
-master | 0.19.4 → master
+master | 0.19.11 → master
+1.1.1 | 0.19.11 → master
 1.1.0 | 0.19.4 → master
 1.0.0 | 0.16.2 → 0.19.3
 
@@ -17,14 +18,14 @@ Install
 -------------
 
 <pre>
-bin/plugin -install medcl/elasticsearch-analysis-mmseg/1.1.0
+bin/plugin -install weiweiwang/elasticsearch-analysis-mmseg/1.1.0
 </pre>
 
 also download the dict files,unzip these dict file to your elasticsearch's config folder,such as: your-es-root/config/mmseg
 
 <pre>
 cd config
-wget http://github.com/downloads/medcl/elasticsearch-analysis-mmseg/mmseg.zip --no-check-certificate
+wget http://github.com/downloads/weiweiwang/elasticsearch-analysis-mmseg/mmseg.zip --no-check-certificate
 unzip mmseg.zip
 rm mmseg.zip
 </pre>
@@ -192,6 +193,11 @@ here is the query result
 }
 
 </pre>
+
+Mmseg4j dict generation
+-------------
+
+see http://weiweiwang.github.com/elasticsearch-configuration-and-performance-tuning.html
 
 
 have fun.

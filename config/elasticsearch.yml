@@ -1,5 +1,5 @@
 cluster:
-  name: elasticsearch_medcl
+  name: elasticsearch_weiweiwang
 
 thrift:
   port: 9500
