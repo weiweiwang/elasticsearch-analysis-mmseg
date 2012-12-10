@@ -21,7 +21,14 @@ import com.chenlb.mmseg4j.Seg;
 public class MMSegAnalyzer extends Analyzer {
 
 	protected Dictionary dic;
-
+	
+	/**
+	 * @see Dictionary#getInstance()
+	 */
+	public MMSegAnalyzer() {
+		dic = Dictionary.getInstance();
+	}
+	
 	/**
 	 * @param path 词库路径
 	 * @see Dictionary#getInstance(String)

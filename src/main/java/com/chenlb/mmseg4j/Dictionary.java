@@ -36,8 +36,8 @@ public class Dictionary {
 	private Map<File, Long> wordsLastTime = null;
 	private long lastLoadTime = 0;
 
-//	/** 不要直接使用, 通过  使用*/
-//	private static File defalutPath = null;
+	/** 不要直接使用, 通过 {@link #getDefalutPath()} 使用*/
+	private static File defalutPath = null;
 	private static final ConcurrentHashMap<File, Dictionary> dics = new ConcurrentHashMap<File, Dictionary>();
 	
 	protected void finalize() throws Throwable {
@@ -57,10 +57,10 @@ public class Dictionary {
 	 * </ol>
 	 * @see #getDefalutPath()
 	 */
-//	public static Dictionary getInstance() {
-//		File path = getDefalutPath();
-//		return getInstance(path);
-//	}
+	public static Dictionary getInstance() {
+		File path = getDefalutPath();
+		return getInstance(path);
+	}
 	
 	/**
 	 * @param path 词典的目录
@@ -142,18 +142,16 @@ public class Dictionary {
 	}
 	
 	private Map<Character, CharNode> loadDic(File wordsPath) throws IOException {
-
-        final Map<Character, CharNode> dic = new HashMap<Character, CharNode>();
-        InputStream charsIn = null;
+		InputStream charsIn = null;
 		File charsFile = new File(wordsPath, "chars.dic");
 		if(charsFile.exists()) {
 			charsIn = new FileInputStream(charsFile);
 			addLastTime(charsFile);	//chars.dic 也检测是否变更
 		} else {	//从 jar 里加载
-            log.warning("[Dict Loading] file is not exist ,"+charsFile.getPath());
-            return dic;
+			charsIn = this.getClass().getResourceAsStream("/data/chars.dic");
+			charsFile = new File(this.getClass().getResource("/data/chars.dic").getFile());	//only for log
 		}
-
+		final Map<Character, CharNode> dic = new HashMap<Character, CharNode>();
 		int lineNum = 0;
 		long s = now();
 		long ss = s;
@@ -213,16 +211,18 @@ public class Dictionary {
 	}
 	
 	private Map<Character, Object> loadUnit(File path) throws IOException {
-		final Map<Character, Object> unit = new HashMap<Character, Object>();
-        InputStream fin = null;
+		InputStream fin = null;
 		File unitFile = new File(path, "units.dic");
 		if(unitFile.exists()) {
 			fin = new FileInputStream(unitFile);
 			addLastTime(unitFile);
 		} else {	//在jar包里的/data/unit.dic
-            log.warning("[Dict Loading] file is not exist ,"+unitFile.getPath());
-            return unit;
+			fin = Dictionary.class.getResourceAsStream("/data/units.dic");
+			unitFile = new File(Dictionary.class.getResource("/data/units.dic").getFile());
 		}
+		
+		final Map<Character, Object> unit = new HashMap<Character, Object>(); 
+		
 		long s = now();
 		int lineNum = load(fin, new FileLoading() {
 
@@ -427,30 +427,30 @@ public class Dictionary {
 	/**
 	 * 当 words.dic 是从 jar 里加载时, 可能 defalut 不存在
 	 */
-//	public static File getDefalutPath() {
-//		if(defalutPath == null) {
-//			String defPath = System.getProperty("mmseg.dic.path");
-//			log.info("look up in mmseg.dic.path="+defPath);
-//			if(defPath == null) {
-//				URL url = Dictionary.class.getClassLoader().getResource("data");
-//				if(url != null) {
-//					defPath = url.getFile();
-//					log.info("look up in classpath="+defPath);
-//				} else {
-//					defPath = System.getProperty("user.dir")+"/data";
-//					log.info("look up in user.dir="+defPath);
-//				}
-//
-//			}
-//
-//			defalutPath = new File(defPath);
-//			if(!defalutPath.exists()) {
-//				log.warning("defalut dic path="+defalutPath+" not exist");
-//			}
-//		}
-//		return defalutPath;
-//	}
-//
+	public static File getDefalutPath() {
+		if(defalutPath == null) {
+			String defPath = System.getProperty("mmseg.dic.path");
+			log.info("look up in mmseg.dic.path="+defPath);
+			if(defPath == null) {
+				URL url = Dictionary.class.getClassLoader().getResource("data");
+				if(url != null) {
+					defPath = url.getFile();
+					log.info("look up in classpath="+defPath);
+				} else {
+					defPath = System.getProperty("user.dir")+"/data";
+					log.info("look up in user.dir="+defPath);
+				}
+				
+			}
+			
+			defalutPath = new File(defPath);
+			if(!defalutPath.exists()) {
+				log.warning("defalut dic path="+defalutPath+" not exist");
+			}
+		}
+		return defalutPath;
+	}
+	
 	/**
 	 * 仅仅用来观察词库.
 	 */

@@ -3,6 +3,8 @@ Mmseg Analysis for ElasticSearch
 
 The Mmseg Analysis plugin integrates Lucene mmseg4j-analyzer:http://code.google.com/p/mmseg4j/ into elasticsearch, support customized dictionary.
 
+Current MMSeg4j version v1.8.5
+
 The plugin includes a `mmseg` analyzer and a `mmseg` tokenizer.
 
 Version
